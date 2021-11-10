@@ -93,5 +93,16 @@ namespace DirTest
             createStream.Write(bytes);
             createStream.Dispose();
         }
+
+        [TestMethod]
+        public void DeleteConfigFile()
+        {
+            var filename = Path.Join(getRuntimeDir(), "config.json");
+            if (File.Exists(filename))
+            {
+                Console.WriteLine("File exists! deleting...");
+                File.Delete(filename);
+            }
+        }
     }
 }

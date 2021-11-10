@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FTPServer
