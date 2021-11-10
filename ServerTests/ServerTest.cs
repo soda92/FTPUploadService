@@ -12,7 +12,9 @@ namespace ServerTests
     // TestTransfer_BreakForTwoMinutes
     public class ServerTests
     {
+        /*
         [TestMethod]
+
         public void TestEqualData()
         {
             MyLogger myLogger = MyLogger.Get("D:/logs/ftpserver/log.log");
@@ -49,5 +51,6 @@ namespace ServerTests
                 path.destroy();
             }
         }
+        */
     }
 }
