@@ -15,36 +15,38 @@ namespace ServerTests
         [TestMethod]
         public void TestEqualData()
         {
+            MyLogger myLogger = MyLogger.Get("D:/logs/ftpserver/log.log");
+
             // Create Data in TEMP directory
-            Path path = Path.Join(Path.GetTempPath(), "programTesting", "test1");
-            DataGeneration.GenreateDataEquals(path, "file.bin", "local", "remote", "500MB");
+            MyPath path = MyPath.Create("test1");
+            DataGeneration.GenreateDataEquals("file.bin", "500MB", path.GetLocal(), path.GetRemote());
 
             // Start Server
-            server = FTPServer.Server(Path.Join(path, "remote"), "127.0.0.1", 2222);
-            server.StartAsync(CancellationToken.None).Wait();
+            server = FTPServer.Server(path.GetRemote(), "127.0.0.1", 2222);
+            server.start();
 
             DateTime start = System.DateTime.Now;
 
             // Upload
-            await FTPUploadService.UploadAsync(Path.Join(path, "local"),
-                                     "file.bin", "127.0.0.1", 2222, "/");
+            FTPUploadService.Upload(path.GetLocalFile("file.bin"), "127.0.0.1", 2222);
 
             DateTime end = System.DateTime.Now;
             TimeSpan period = end - start;
 
             // Compare hash
-            string hashLocal = FileComparation.GetSha256("local/file.bin");
-            string hashRemote = FileComparation.GetSha256("remote/file.bin");
+            string hashLocal = FileComparation.GetSha256(path.GetLocalFile("file.bin"));
+            string hashRemote = FileComparation.GetSha256(path.GetRemoteFile("file.bin"));
             try
             {
                 AssertEquals(hashLocal, hashRemote);
             }
             finally
             {
-                Console.WriteLine(string.Format("Upload cost {0} seconds.", period.TotalSeconds));
+                myLogger.WriteLine(string.Format("TestEqualData cost {0} seconds.", period.TotalSeconds));
+
                 // Clean up
-                server.StopAsync(CancellationToken.None).Wait();
-                RemovePathRecursive(Path.Join(Path.GetTempPath(), "programTesting"));
+                server.stop();
+                path.destroy();
             }
         }
     }

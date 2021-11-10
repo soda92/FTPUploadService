@@ -18,6 +18,7 @@
     <ProjectReference Include="..\FileComparation\FileComparation.csproj" />
     <ProjectReference Include="..\FTPServer\FTPServer.csproj" />
     <ProjectReference Include="..\FTPUploadService\FTPUploadService.csproj" />
+    <ProjectReference Include="..\MyPath\MyPath.csproj" />
   </ItemGroup>
 
 </Project>
