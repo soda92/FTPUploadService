@@ -1,7 +1,8 @@
 ﻿using System;
 using FluentFTP;
 using FluentFTP.Helpers;
-using System.Text.Json;
+using ConfigNamespace;
+using System.Threading.Tasks;
 
 namespace FTPUploadService
 {
@@ -16,16 +17,26 @@ namespace FTPUploadService
     }
     class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            using (var ftp = new FtpClient("127.0.0.1", 2222, "user", "12345"))
+            if (!Config.Exists())
+            {
+                Console.WriteLine("Creating config file...");
+                await Config.CreateConfig();
+                return;
+            }
+
+            var config = await Config.ReadConfig();
+
+            using (var ftp = new FtpClient(
+                config.server_address, config.port, config.username, config.password))
             {
                 DateTime start = DateTime.Now;
                 FtpTrace.EnableTracing = true;
-                FtpTrace.LogToConsole = true;
+                FtpTrace.LogToFile = "upload.log";
                 ftp.Connect();
                 ftp.RetryAttempts = 3;
-                ftp.UploadDirectory(@"D:\Data\test-sesrver", @"upload/test_server",
+                await ftp.UploadDirectoryAsync(config.local_folder, config.remote_folder,
                     FtpFolderSyncMode.Update, FtpRemoteExists.Resume, FtpVerify.Retry);
                 DateTime end = DateTime.Now;
                 TimeSpan timeSpan = end - start;

@@ -53,7 +53,7 @@ namespace DirTest
                 AllowTrailingCommas = true,
             };
             string serialized = JsonSerializer.Serialize(model, options);
-            string filename = getRuntimeDir() + "/config.json";
+            string filename = $"{getRuntimeDir()}/config.json";
             var bytes = Encoding.UTF8.GetBytes(serialized);
             using FileStream createStream = File.Create(filename);
             createStream.Write(bytes);

@@ -5,17 +5,21 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTPUploadService", "FTPUploadService\FTPUploadService.csproj", "{06A45F01-AA1B-419D-BE07-F9E442D49599}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTPServer", "FTPServer\FTPServer.csproj", "{376EC64E-81FE-4866-9C78-C2803424DDA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTPServer", "FTPServer\FTPServer.csproj", "{376EC64E-81FE-4866-9C78-C2803424DDA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGeneration", "DataGeneration\DataGeneration.csproj", "{A21122C7-6A85-4610-8338-798E6544EFA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataGeneration", "DataGeneration\DataGeneration.csproj", "{A21122C7-6A85-4610-8338-798E6544EFA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileComparation", "FileComparation\FileComparation.csproj", "{05007EBA-6FE7-4AFD-B90C-A5E7BCBD6F63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileComparation", "FileComparation\FileComparation.csproj", "{05007EBA-6FE7-4AFD-B90C-A5E7BCBD6F63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTests", "ServerTests\ServerTests.csproj", "{0C79CA5C-B97D-424F-9230-A8B6E44C557A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTests", "ServerTests\ServerTests.csproj", "{0C79CA5C-B97D-424F-9230-A8B6E44C557A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPath", "MyPath\MyPath.csproj", "{E135CD88-DCFA-4346-ABCC-3BA62540BD48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPath", "MyPath\MyPath.csproj", "{E135CD88-DCFA-4346-ABCC-3BA62540BD48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLogger", "MyLogger\MyLogger.csproj", "{F4FA05BB-128B-44E5-8590-F8016F911820}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyLogger", "MyLogger\MyLogger.csproj", "{F4FA05BB-128B-44E5-8590-F8016F911820}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyConfig", "MyConfig\MyConfig.csproj", "{6256E913-1B77-4ED3-BBB6-1274E8F32CD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDataModel", "MyDataModel\MyDataModel.csproj", "{A225C68D-CE15-4F86-9AFE-0DF03077D2E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{F4FA05BB-128B-44E5-8590-F8016F911820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4FA05BB-128B-44E5-8590-F8016F911820}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4FA05BB-128B-44E5-8590-F8016F911820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6256E913-1B77-4ED3-BBB6-1274E8F32CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6256E913-1B77-4ED3-BBB6-1274E8F32CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6256E913-1B77-4ED3-BBB6-1274E8F32CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6256E913-1B77-4ED3-BBB6-1274E8F32CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A225C68D-CE15-4F86-9AFE-0DF03077D2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A225C68D-CE15-4F86-9AFE-0DF03077D2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A225C68D-CE15-4F86-9AFE-0DF03077D2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A225C68D-CE15-4F86-9AFE-0DF03077D2E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
