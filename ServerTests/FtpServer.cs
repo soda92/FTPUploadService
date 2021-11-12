@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,11 +15,11 @@ namespace ServerTests
 
         public static async Task StartServerAsync()
         {
+            Directory.CreateDirectory(TestConfig.data_location);
             // Setup dependency injection
             var services = new ServiceCollection();
-
             services.Configure<DotNetFileSystemOptions>(opt => opt
-                .RootPath = @"D:\Data\upload");
+                .RootPath = TestConfig.server_start_location);
             services.AddFtpServer(builder => builder
                 .UseDotNetFileSystem()); // Use the .NET file system functionality
 

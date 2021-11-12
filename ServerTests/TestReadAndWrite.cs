@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ServerTests
 {
     [TestClass]
-    public class FtpTests
+    public class TestReadWrite
     {
         FtpClient client;
         [TestInitialize]

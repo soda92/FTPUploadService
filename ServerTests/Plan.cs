@@ -3,10 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ServerTests
 {
     [TestClass]
-    // TestEqualData
-    // TestHalfData
-    // TestHalfData_ServerHasError
+    // TestUploadData
+    // TestHaveEqualData
+    // TestHaveHalfData
+    // TestHaveHalfErrorData
+
     // TestDifferentData_ServerBigger
+
     // TestTransfer_BreakForTwoMinutes
     public class ServerTests
     {
