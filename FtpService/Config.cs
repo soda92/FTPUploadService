@@ -4,21 +4,17 @@ using System.Threading.Tasks;
 
 namespace FtpService
 {
+    public class DataModel
+    {
+        public string server_address { get; set; }
+        public int port { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string local_folder { get; set; }
+        public string remote_folder { get; set; }
+    }
     public class MyConfig
     {
-        private static string getRuntimePath()
-        {
-            return System.AppContext.BaseDirectory;
-        }
-        private static bool Exists()
-        {
-            var filename = Path.Join(getRuntimePath(), "config.json");
-            return File.Exists(filename);
-        }
-        public static string GetConfigFullPath()
-        {
-            return Path.Join(getRuntimePath(), "config.json");
-        }
         private static async Task CreateConfig()
         {
             var model = new DataModel
@@ -50,6 +46,20 @@ namespace FtpService
             using FileStream openStream = File.OpenRead(GetConfigFullPath());
             DataModel data = await JsonSerializer.DeserializeAsync<DataModel>(openStream);
             return data;
+        }
+
+        private static string getRuntimePath()
+        {
+            return System.AppContext.BaseDirectory;
+        }
+        private static bool Exists()
+        {
+            var filename = Path.Join(getRuntimePath(), "config.json");
+            return File.Exists(filename);
+        }
+        public static string GetConfigFullPath()
+        {
+            return Path.Join(getRuntimePath(), "config.json");
         }
     }
 }
