@@ -7,19 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
-    <PackageReference Include="coverlet.collector" Version="3.0.2" />
+    <PackageReference Include="FluentFTP" Version="35.0.5" />
+    <PackageReference Include="FubarDev.FtpServer" Version="3.1.2" />
+    <PackageReference Include="FubarDev.FtpServer.FileSystem.DotNet" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
+    <PackageReference Include="coverlet.collector" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataGeneration\DataGeneration.csproj" />
-    <ProjectReference Include="..\FileComparation\FileComparation.csproj" />
-    <ProjectReference Include="..\FTPServer\FTPServer.csproj" />
-    <ProjectReference Include="..\FTPUploadService\FTPUploadService.csproj" />
-    <ProjectReference Include="..\MyPath\MyPath.csproj" />
-    <ProjectReference Include="..\MyConfig\MyConfig.csproj" />
+    <ProjectReference Include="..\FTPUploadService\FtpService.csproj" />
   </ItemGroup>
 
 </Project>

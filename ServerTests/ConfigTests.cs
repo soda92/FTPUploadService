@@ -1,12 +1,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using MyConfigNamespace;
 using System.Threading.Tasks;
+using FtpService;
 
 namespace ConfigTestNamespace
 {
     [TestClass]
-    public class ConfigTest
+    public class ConfigTests
     {
         [TestMethod]
         public void testconfig()

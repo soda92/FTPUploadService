@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace MyDataModel
+﻿
+namespace FtpService
 {
+
     public class DataModel
     {
         public string server_address { get; set; }
@@ -11,4 +11,5 @@ namespace MyDataModel
         public string local_folder { get; set; }
         public string remote_folder { get; set; }
     }
+   
 }

@@ -1,17 +1,19 @@
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Text.Json;
-using FTPUploadService;
+using System.IO;
 using System.Threading.Tasks;
 
-namespace ConfigNamespace
+namespace FtpService
 {
-    public class Config
+    public class MyConfig
     {
-        public static string getRuntimePath()
+        private static string getRuntimePath()
         {
             return System.AppContext.BaseDirectory;
         }
-        public static bool Exists()
+        private static bool Exists()
         {
             var filename = Path.Join(getRuntimePath(), "config.json");
             return File.Exists(filename);
@@ -20,7 +22,7 @@ namespace ConfigNamespace
         {
             return Path.Join(getRuntimePath(), "config.json");
         }
-        public static async Task CreateConfig()
+        private static async Task CreateConfig()
         {
             var model = new DataModel
             {
@@ -45,7 +47,8 @@ namespace ConfigNamespace
         {
             if (!Exists())
             {
-                throw new System.Exception("Config not exists");
+                // throw new System.Exception("Config not exists");
+                await CreateConfig();
             }
             using FileStream openStream = File.OpenRead(GetConfigFullPath());
             DataModel data = await JsonSerializer.DeserializeAsync<DataModel>(openStream);

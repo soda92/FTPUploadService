@@ -3,13 +3,13 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
-using FTPUploadService;
 using System.Text;
+using FtpService;
 
 namespace DirTest
 {
     [TestClass]
-    public class DirTest
+    public class DirTests
     {
         public string getRuntimeDir()
         {
@@ -30,7 +30,7 @@ namespace DirTest
         [TestMethod]
         public void getRuntimePath()
         {
-            Console.WriteLine(System.AppContext.BaseDirectory);
+            Console.WriteLine(AppContext.BaseDirectory);
         }
 
         [TestMethod]
