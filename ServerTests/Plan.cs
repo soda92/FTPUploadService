@@ -30,7 +30,7 @@ namespace ServerTests
             DateTime start = System.DateTime.Now;
 
             // Upload
-            FTPUploadService.Upload(path.GetLocalFile("file.bin"), "127.0.0.1", 2222);
+            FtpService.Upload(path.GetLocalFile("file.bin"), "127.0.0.1", 2222);
 
             DateTime end = System.DateTime.Now;
             TimeSpan period = end - start;

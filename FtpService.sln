@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FtpService", "FTPUploadService\FtpService.csproj", "{06A45F01-AA1B-419D-BE07-F9E442D49599}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FtpService", "FtpService\FtpService.csproj", "{06A45F01-AA1B-419D-BE07-F9E442D49599}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTests", "ServerTests\ServerTests.csproj", "{0C79CA5C-B97D-424F-9230-A8B6E44C557A}"
 EndProject

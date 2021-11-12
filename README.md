@@ -1,3 +1,3 @@
-# FTPUploadService
+# FtpService
 
 practicing csharp.

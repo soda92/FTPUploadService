@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/FTPUploadService/bin/Debug/netcoreapp3.1/FTPUploadService.dll",
+            "program": "${workspaceFolder}/FtpService/bin/Debug/netcoreapp3.1/FtpService.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/FTPUploadService",
+            "cwd": "${workspaceFolder}/FtpService",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

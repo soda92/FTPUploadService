@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using FluentFTP;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,19 +22,19 @@ namespace ServerTests
             await client.ConnectAsync();
         }
         [TestMethod]
-        public void createDirectoryTest()
+        public void TestCreateDirectory()
         {
             if (!client.DirectoryExists("test"))
             {
                 client.CreateDirectory("test");
             }
-            foreach(FtpListItem item in client.GetListing())
+            foreach (FtpListItem item in client.GetListing())
             {
-                if(item.Type == FtpFileSystemObjectType.Directory)
+                if (item.Type == FtpFileSystemObjectType.Directory)
                 {
                     Console.Write("Directory: ");
                 }
-                else if(item.Type == FtpFileSystemObjectType.File)
+                else if (item.Type == FtpFileSystemObjectType.File)
                 {
                     Console.Write("File: ");
                 }
@@ -41,11 +42,20 @@ namespace ServerTests
             }
         }
         [TestMethod]
-        public void testCreateFile()
+        public void TestCreateFile()
         {
             string Data = "Hello World!\n";
             byte[] data = Encoding.UTF8.GetBytes(Data);
+            Console.WriteLine("Appending to File: /test2/file.txt");
             client.Upload(data, "/test2/file.txt", FtpRemoteExists.AddToEnd, true);
+        }
+        [TestMethod]
+        public void TestGetFileContents()
+        {
+            using MemoryStream memoryStream = new MemoryStream();
+            client.Download(memoryStream, "/test2/file.txt");
+            string Data = Encoding.UTF8.GetString(memoryStream.ToArray());
+            Console.WriteLine(Data);
         }
         [TestCleanup]
         public async Task Cleanup()
