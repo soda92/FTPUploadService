@@ -14,7 +14,7 @@ namespace ServerTests
         [TestMethod]
         public void TestGetCurrLocation()
         {
-            Console.WriteLine(System.AppContext.BaseDirectory);
+            Console.WriteLine(AppContext.BaseDirectory);
         }
         [TestMethod]
         public void TestGetSelfProjectLocation()
