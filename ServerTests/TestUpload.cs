@@ -15,6 +15,7 @@ namespace ServerTests
         public static string filename = "DATA";
         public static string file_path = Path.Combine(TestConfig.data_location, filename);
         public static string remote_path = Path.Join(TestConfig.server_start_location, filename);
+        public static int datasize_mb = 1024;
         public FtpClient client;
         [TestInitialize]
         public async Task Setup()
@@ -24,6 +25,8 @@ namespace ServerTests
             await Server.StartServerAsync();
             client = await MyClient.Get();
             await client.ConnectAsync();
+
+            CreateFileWithSizeMB(datasize_mb);
         }
         public static void CreateFileWithSizeMB(int size)
         {
@@ -45,29 +48,143 @@ namespace ServerTests
         [TestMethod]
         public void TestUploadFile()
         {
-            CreateFileWithSizeMB(512);
-
             DateTime start = DateTime.Now;
             FtpTrace.EnableTracing = true;
+            FtpTrace.LogToConsole = true;
 
             client.UploadFile(file_path, filename, FtpRemoteExists.Overwrite, true, FtpVerify.Retry);
 
             DateTime end = DateTime.Now;
             TimeSpan timeSpan = end - start;
             Console.WriteLine(string.Format("It costs {0} seconds.", timeSpan.TotalSeconds));
-
-            Assert.IsTrue(client.FileExists(Path.Join("/", filename)));
-            string checksum_origin = SHA256CheckSum(file_path);
-            string checksum_remote = SHA256CheckSum(remote_path);
-            Assert.AreEqual(checksum_origin, checksum_remote);
-
-            File.Delete(remote_path);
         }
+        [TestMethod]
+        public void TestSkipping()
+        {
+            if (File.Exists(remote_path))
+            {
+                File.Delete(remote_path);
+            }
+            File.Copy(file_path, remote_path);
+
+            DateTime start = DateTime.Now;
+            client.UploadFile(file_path, filename, FtpRemoteExists.Skip, true, FtpVerify.Throw);
+
+            DateTime end = DateTime.Now;
+            Assert.IsTrue(File.Exists(remote_path));
+            TimeSpan timeSpan = end - start;
+            Console.WriteLine(string.Format("It costs {0} seconds.", timeSpan.TotalSeconds));
+        }
+        [TestMethod]
+        public void TestHalf()
+        {
+            using FileStream fileStream = File.OpenRead(file_path);
+            using FileStream fileStream1 = File.Create(remote_path);
+            for (int i = 0; i < datasize_mb / 2; i++)
+            {
+                byte[] data = new byte[1024 * 1024];
+                fileStream.Read(data);
+                fileStream1.Write(data);
+            }
+            fileStream.Close();
+            fileStream1.Close();
+
+            long size = client.GetFileSize(filename);
+            var attributes = new FileInfo(file_path);
+            long local_size = attributes.Length;
+
+            DateTime start = DateTime.Now;
+            if (size != local_size)
+            {
+                client.UploadFile(file_path, filename, FtpRemoteExists.Overwrite, true, FtpVerify.Retry);
+            }
+
+            DateTime end = DateTime.Now;
+            TimeSpan timeSpan = end - start;
+            Console.WriteLine(string.Format("It costs {0} seconds.", timeSpan.TotalSeconds));
+        }
+
+        [TestMethod]
+        public void TestHalfWithRetryLengthNotEqual()
+        {
+            using FileStream fileStream = File.OpenRead(file_path);
+            using FileStream fileStream1 = File.Create(remote_path);
+            for (int i = 0; i < datasize_mb / 2; i++)
+            {
+                byte[] data = new byte[1024 * 1024];
+                fileStream.Read(data);
+                fileStream1.Write(data);
+            }
+            fileStream.Close();
+            fileStream1.Close();
+
+            DateTime start = DateTime.Now;
+
+            client.RetryAttempts = 3;
+            FtpCompareResult result = client.CompareFile(file_path, remote_path);
+
+            if (result != FtpCompareResult.Equal)
+            {
+                client.UploadFile(file_path, filename, FtpRemoteExists.Overwrite, true, FtpVerify.Retry);
+            }
+
+            DateTime end = DateTime.Now;
+            TimeSpan timeSpan = end - start;
+            Console.WriteLine(string.Format("It costs {0} seconds.", timeSpan.TotalSeconds));
+        }
+
+        [TestMethod]
+        public void TestHalfWithRetryLengthEqualDataNotEqual()
+        {
+            using FileStream fileStream1 = File.Create(remote_path);
+            for (int i = 0; i < datasize_mb; i++)
+            {
+                byte[] data = new byte[1024 * 1024];
+                fileStream1.Write(data);
+            }
+            fileStream1.Close();
+
+            DateTime start = DateTime.Now;
+
+            client.RetryAttempts = 3;
+            FtpCompareResult result = client.CompareFile(file_path, remote_path);
+
+            if (result != FtpCompareResult.Equal)
+            {
+                client.UploadFile(file_path, filename, FtpRemoteExists.Overwrite, true, FtpVerify.Retry);
+            }
+
+            DateTime end = DateTime.Now;
+            TimeSpan timeSpan = end - start;
+            Console.WriteLine(string.Format("It costs {0} seconds.", timeSpan.TotalSeconds));
+        }
+
+        [TestMethod]
+        public void TestTimeout()
+        {
+
+        }
+
         [TestCleanup]
         public async Task Cleanup()
         {
-            await client.DisconnectAsync();
-            await Server.StopServerAsync();
+            string checksum_origin = SHA256CheckSum(file_path);
+            string checksum_remote = SHA256CheckSum(remote_path);
+            try
+            {
+                Assert.IsTrue(client.FileExists(Path.Join("/", filename)));
+                Assert.AreEqual(checksum_origin, checksum_remote);
+                Assert.IsTrue(File.Exists(remote_path));
+            }
+            finally
+            {
+                if (File.Exists(remote_path))
+                {
+                    File.Delete(remote_path);
+                }
+                await client.DisconnectAsync();
+                await Server.StopServerAsync();
+            }
         }
     }
 }

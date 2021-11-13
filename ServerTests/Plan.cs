@@ -4,11 +4,12 @@ namespace ServerTests
 {
     [TestClass]
     // TestUploadData
-    // TestHaveEqualData
-    // TestHaveHalfData
-    // TestHaveHalfErrorData
+    // TestHaveEqualData // 重传
 
-    // TestDifferentData_ServerBigger
+    // TestHaveHalfData  // 重传
+    // TestDifferentData_ServerBigger // 重传
+
+    // TestHaveHalfErrorData // Hash Not supported; 重传
 
     // TestTransfer_BreakForTwoMinutes
     public class ServerTests
