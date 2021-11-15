@@ -40,7 +40,7 @@ namespace ServerTests
                 fileStream.Write(buffer);
             }
         }
-        public string SHA256CheckSum(string filePath)
+        public static string SHA256CheckSum(string filePath)
         {
             using (SHA256 SHA256 = SHA256.Create())
             {

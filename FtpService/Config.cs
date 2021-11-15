@@ -51,7 +51,6 @@ namespace FtpService
 
         public static Config GetExampleConfig()
         {
-
             var data = new Config
             {
                 ServerAddress = "127.0.0.1",

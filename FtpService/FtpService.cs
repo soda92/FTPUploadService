@@ -8,13 +8,38 @@ namespace FtpService
 {
     public class MyClient
     {
+        public static void UploadFile(FtpClient ftp, string src, string dst)
+        {
+            if (ftp.FileExists(dst))
+            {
+                var size = ftp.GetFileSize(dst);
+                var size2 = new FileInfo(src).Length;
+                if (size == size2)
+                {
+                    return;
+                }
+            }
+
+            ftp.UploadFile(src, dst, FtpRemoteExists.Overwrite, true);
+        }
         public static void UploadFolder(FtpClient ftp, string src, string dst)
         {
-            //File
+            ftp.CreateDirectory(dst);
+            string[] directories = Directory.GetDirectories(src);
+            foreach (string d in directories)
+            {
+                var dstFolder = Path.Join(dst, new DirectoryInfo(d).Name);
+                UploadFolder(ftp, d, dstFolder);
+            }
+            string[] files = Directory.GetFiles(src);
+            foreach (string f in files)
+            {
+                var dstFile = Path.Join(dst, Path.GetFileName(f));
+                UploadFile(ftp, f, dstFile);
+            }
         }
-        public static async Task<double> Upload()
+        public static async Task<double> Upload(Config config)
         {
-            var config = await MyConfig.ReadConfig();
             var ftp = new FtpClient(
                 config.ServerAddress, config.Port, config.Username, config.Password);
 
@@ -27,10 +52,8 @@ namespace FtpService
             foreach (var path in config.Paths)
             {
                 string src = Path.Join(config.LocalRoot, path.src);
-                string dst = Path.Join(config.ServerRoot, path.dst);
-                // TODO
-                await ftp.UploadDirectoryAsync(src, dst,
-                FtpFolderSyncMode.Update, FtpRemoteExists.Resume, FtpVerify.Retry);
+                string dst = Path.Join(config.ServerRoot, config.HostName, path.dst);
+                UploadFolder(ftp, src, dst);
             }
             await ftp.DisconnectAsync();
             DateTime end = DateTime.Now;
@@ -48,7 +71,8 @@ namespace FtpService
                 return;
             }
 
-            var time = await MyClient.Upload();
+            var config = await MyConfig.ReadConfig();
+            var time = await MyClient.Upload(config);
 
             Console.WriteLine(string.Format("It costs {0} seconds.", time));
         }
