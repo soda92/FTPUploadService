@@ -7,19 +7,19 @@ namespace ServerTests
 {
     public class CustomMembershipProvider : IMembershipProvider
     {
-        public async Task<MemberValidationResult> 
+        public Task<MemberValidationResult> 
             ValidateUserAsync(string username, string password)
         {
-            var config = await MyConfig.ReadConfig();
-            if (username == config.username && password == config.password)
+            var config = MyConfig.GetExampleConfig();
+            if (username == config.Username && password == config.Password)
             {
                 var identity = new ClaimsIdentity();
-                return new MemberValidationResult(
+                return Task.FromResult(new MemberValidationResult(
                        MemberValidationStatus.AuthenticatedUser,
-                       new ClaimsPrincipal(identity));
+                       new ClaimsPrincipal(identity)));
             }
 
-            return new MemberValidationResult(MemberValidationStatus.InvalidLogin);
+            return Task.FromResult(new MemberValidationResult(MemberValidationStatus.InvalidLogin));
         }
     }
 }

@@ -16,9 +16,9 @@ namespace ServerTests
         public async Task Connect()
         {
             await Server.StartServerAsync();
-            DataModel config = await MyConfig.ReadConfig();
+            Config config = MyConfig.GetExampleConfig();
             client = new FtpClient(
-                config.server_address, config.port, config.username, config.password);
+                config.ServerAddress, config.Port, config.Username, config.Password);
             await client.ConnectAsync();
         }
         [TestMethod]

@@ -1,65 +1,103 @@
 ﻿using System.Text.Json;
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace FtpService
 {
-    public class DataModel
+    public class PathMapping
     {
-        public string server_address { get; set; }
-        public int port { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string local_folder { get; set; }
-        public string remote_folder { get; set; }
+        public string src { get; set; }
+        public string dst { get; set; }
+    }
+    public class Config
+    {
+        public string ServerAddress { get; set; }
+        public int Port { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string ServerRoot { get; set; }
+        public string LocalRoot { get; set; }
+        public string HostName { get; set; }
+        public List<PathMapping> Paths { get; set; }
     }
     public class MyConfig
     {
-        private static async Task CreateConfig()
+        public static void CreateExampleConfig()
         {
-            var model = new DataModel
-            {
-                server_address = "127.0.0.1",
-                port = 2222,
-                username = "user",
-                password = "12345",
-                local_folder = @"D:\Data\test-sesrver",
-                remote_folder = @"upload/test_server"
-            };
+            CreateConfigUsingData(GetExampleConfig());
+        }
 
+        public static void CreateConfigUsingData(Config data)
+        {
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
             };
-            using FileStream createStream = File.Create(GetConfigFullPath());
-            await JsonSerializer.SerializeAsync(createStream, model, options);
-            await createStream.DisposeAsync();
+            string fileName = GetConfigFullPath();
+            string jsonString = JsonSerializer.Serialize(data, options);
+            File.WriteAllText(fileName, jsonString);
         }
 
-        public static async Task<DataModel> ReadConfig()
+        public static string GetSerializedData(Config data)
         {
-            if (!Exists())
+            var options = new JsonSerializerOptions
             {
-                // throw new System.Exception("Config not exists");
-                await CreateConfig();
-            }
-            using FileStream openStream = File.OpenRead(GetConfigFullPath());
-            DataModel data = await JsonSerializer.DeserializeAsync<DataModel>(openStream);
+                WriteIndented = true,
+            };
+            var json = JsonSerializer.Serialize(data, options);
+            return json;
+        }
+
+        public static Config GetExampleConfig()
+        {
+
+            var data = new Config
+            {
+                ServerAddress = "127.0.0.1",
+                Port = 2222,
+                Username = "user",
+                Password = "12345",
+                ServerRoot = "/Data/Upload",
+                LocalRoot = "/home/toybrick/",
+                HostName = "board",
+                Paths = new List<PathMapping>
+                {
+                    new PathMapping{ src = "lamp_sample", dst = "lamp_sample" },
+                    new PathMapping{ src = "Multicast_rk", dst = "other/Multicast_rk"},
+                    new PathMapping{ src = "code/lamp_detect", dst = "code_lamp_detect"},
+                },
+            };
             return data;
         }
 
-        private static string getRuntimePath()
+        public static async Task<Config> ReadConfig()
+        {
+            using FileStream openStream = File.OpenRead(GetConfigFullPath());
+            Config data = await JsonSerializer.DeserializeAsync<Config>(openStream);
+            return data;
+        }
+
+        public static string GetRuntimePath()
         {
             return System.AppContext.BaseDirectory;
         }
-        private static bool Exists()
+        public static bool Exists()
         {
-            var filename = Path.Join(getRuntimePath(), "config.json");
+            var filename = Path.Join(GetRuntimePath(), "config.json");
             return File.Exists(filename);
+        }
+        public static void DeleteConfig()
+        {
+            var filename = Path.Join(GetRuntimePath(), "config.json");
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
         }
         public static string GetConfigFullPath()
         {
-            return Path.Join(getRuntimePath(), "config.json");
+            return Path.Join(GetRuntimePath(), "config.json");
         }
     }
 }

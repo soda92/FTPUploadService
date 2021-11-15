@@ -2,13 +2,30 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using FtpService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ServerTests
 {
     public class TestConfig
     {
-        private static string root_folder = @"D:\Data";
-        public static string server_start_location = Path.Join(root_folder, "server");
-        public static string data_location = Path.Join(root_folder, "data");
+        private static readonly string RootFolder = @"D:\Data";
+        public static readonly string ServerStartLocation = Path.Join(RootFolder, "server");
+        public static readonly string DataLocation = Path.Join(RootFolder, "data");
+    }
+
+    [TestClass]
+    public class TestConf
+    {
+        [TestMethod]
+        public void GetConfig()
+        {
+            MyConfig.DeleteConfig();
+            var data = MyConfig.GetExampleConfig();
+            var json = MyConfig.GetSerializedData(data);
+            Console.WriteLine(json);
+        }
+        //[TestMethod]
+        //public 
     }
 }
